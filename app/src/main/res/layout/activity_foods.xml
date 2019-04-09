@@ -5,14 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MenuActivity"
-    tools:showIn="@layout/app_bar_menu">
+    tools:context=".FoodsActivity">
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="Category"
+        android:gravity="center"
+        android:id="@+id/categoryName"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/categoryList"/>
+        android:id="@+id/foodsList"/>
+
 </LinearLayout>

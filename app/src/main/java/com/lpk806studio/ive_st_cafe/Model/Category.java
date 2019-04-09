@@ -1,7 +1,7 @@
 package com.lpk806studio.ive_st_cafe.Model;
 
 public class Category {
-    private String name;
+    public String name;
 
     private Category(){
 
