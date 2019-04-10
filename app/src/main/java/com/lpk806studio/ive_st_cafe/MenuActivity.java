@@ -59,7 +59,8 @@ public class MenuActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent cart = new Intent(MenuActivity.this,CartActivity.class);
+                startActivity(cart);
             }
         });
 
