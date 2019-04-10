@@ -46,9 +46,9 @@ public class CartActivity extends AppCompatActivity {
         adapter = new FirebaseListAdapter<Cart>(options) {
             @Override
             protected void populateView(View v, Cart model, int position) {
-                TextView name = findViewById(R.id.cart_name);
-                TextView price = findViewById(R.id.cart_price);
-                TextView count = findViewById(R.id.cart_count);
+                TextView name = (TextView)v.findViewById(R.id.cart_name);
+                TextView price = (TextView)v.findViewById(R.id.cart_price);
+                TextView count = (TextView)v.findViewById(R.id.cart_count);
                 name.setText(model.getName());
                 price.setText("$" + model.getPrice());
                 count.setText(model.getCount());
