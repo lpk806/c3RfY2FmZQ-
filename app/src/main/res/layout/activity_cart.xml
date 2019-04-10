@@ -5,19 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#388e3c"
     tools:context=".CartActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="#fff"
         android:text="購物車"
         android:layout_marginTop="20dp"
         android:textSize="30sp"/>
 
     <ListView
+        android:id="@+id/cartList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/cartList"/>
+        android:layout_height="75mm"
+        android:layout_margin="20dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total $ 0"
+        android:id="@+id/totalPrice"
+        android:textColor="#000"
+        android:layout_marginRight="20dp"
+        android:gravity="right"
+        android:textSize="20sp"/>
+
+    <Button
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        android:textColor="#000"
+        android:text="落單"/>
 
 </LinearLayout>
