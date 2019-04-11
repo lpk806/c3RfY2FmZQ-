@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,9 +47,6 @@ public class FoodDetailActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         counttxt.setText("1");
-
-
-
 
         if (getIntent() !=null) {
             FoodId = getIntent().getStringExtra("FoodItemId");
@@ -99,11 +97,14 @@ public class FoodDetailActivity extends AppCompatActivity {
         String uid = user.getUid();
         Cart cart = new Cart(name,price,count,uid);
         Random x = new Random();
-        String id = Integer.toString(x.nextInt(9999));
+        String id = Integer.toString(x.nextInt(999999));
         ref = FirebaseDatabase.getInstance().getReference();
         ref.child("Cart").child(id).setValue(cart);
 
         Toast.makeText(FoodDetailActivity.this,"加入成功",Toast.LENGTH_LONG).show();
+
+        Intent menu = new Intent(FoodDetailActivity.this,MenuActivity.class);
+        startActivity(menu);
     }
 
 

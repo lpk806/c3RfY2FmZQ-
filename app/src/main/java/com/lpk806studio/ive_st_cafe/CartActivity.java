@@ -1,10 +1,17 @@
 package com.lpk806studio.ive_st_cafe;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -20,25 +27,50 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.lpk806studio.ive_st_cafe.Model.Cart;
+import com.lpk806studio.ive_st_cafe.Model.Order;
+
+import java.util.Random;
 
 public class CartActivity extends AppCompatActivity {
     FirebaseUser user;
-    ListView cartList;
     FirebaseListAdapter<Cart> adapter;
     double total,itemPrice;
     TextView totalPrice;
+    Button btn_order;
+    String totalName="",itemname,itemcount;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        cartList = findViewById(R.id.cartList);
         totalPrice = findViewById(R.id.totalPrice);
-
+        btn_order = findViewById(R.id.btn_order);
         //get user id to map the cart item
         user = FirebaseAuth.getInstance().getCurrentUser();
         loadCartList(user.getUid());
+
+        btn_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference ref = firebaseDatabase.getReference();
+                Random x = new Random();
+                String id = Integer.toString(x.nextInt(9999));
+                String status = "待付款";
+                String uid = user.getUid();
+                String orderPrice = Double.toString(total);
+                Order order = new Order(id,uid,status,totalName,orderPrice);
+                ref.child("Order").child(id).setValue(order);
+
+                firebaseDatabase.getReference("Cart").child(uid).removeValue();
+
+                Intent payment = new Intent(CartActivity.this,PaymentActivity.class);
+                payment.putExtra("price",orderPrice);
+                payment.putExtra("OrderId",id);
+                startActivity(payment);
+            }
+        });
 
     }
 
@@ -62,27 +94,12 @@ public class CartActivity extends AppCompatActivity {
                 final Double numCount = Double.parseDouble(model.getCount());
                 name.setText(model.getName());
                 price.setText("$" + model.getPrice());
-                count.setText(model.getCount());
-
-
-                //check box
-                final CheckBox checkBox = (CheckBox)v.findViewById(R.id.checkbox);
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (checkBox.isChecked()){
-                            //user select the item
-                            itemPrice = Double.parseDouble(model.getPrice());
-                            itemPrice *= numCount;
-                            totaPrice(itemPrice);
-                        }else{
-                            //user not select the item
-                            itemPrice = Double.parseDouble(model.getPrice());
-                            Double a = (itemPrice *= numCount)*-1;
-                            totaPrice(a);
-                        }
-                    }
-                });
+                count.setText("x" + model.getCount());itemPrice = Double.parseDouble(model.getPrice());
+                itemname = model.getName();
+                itemcount = model.getCount();
+                totalNamelist(itemname,itemcount);
+                itemPrice *= numCount;
+                totaPrice(itemPrice);
 
                 //delete button
                 Button btn_delete = (Button)v.findViewById(R.id.btn_delete);
@@ -91,14 +108,61 @@ public class CartActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         FirebaseDatabase.getInstance().getReference("Cart").child(adapter.getRef(position).getKey()).removeValue();
                         Snackbar.make(v, "刪除成功", Snackbar.LENGTH_LONG).show();
+                        finish();
+                        startActivity(getIntent());
+
                     }
                 });
                 //end of delete button
             }
         };
+        ListView cartList = findViewById(R.id.cartList);
         cartList.setAdapter(adapter);
+        cartList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(CartActivity.this,"on9",Toast.LENGTH_SHORT).show();
 
+//                TextView Tname = (TextView)view.findViewById(R.id.cart_name);
+//                TextView Tcount = (TextView)view.findViewById(R.id.cart_count);
+//                String name = Tname.getText().toString();
+//                String count = Tcount.getText().toString();
+//
+//                //craete dialog
+//                AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
+//                builder.setTitle("123");
+//
+//                builder.setCancelable(true);
+//                builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(CartActivity.this,"save button",Toast.LENGTH_SHORT).show();
+//                        dialog.cancel();
+//                    }
+//                });
+//                builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(CartActivity.this,"delete button",Toast.LENGTH_SHORT).show();
+//                        dialog.cancel();
+//                    }
+//                });
+//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(CartActivity.this,"cancel button",Toast.LENGTH_SHORT).show();
+//                        dialog.cancel();
+//                    }
+//                });
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+            }
+        });
 
+    }
+
+    private void totalNamelist(String itemname,String itemcount) {
+        totalName += (itemname +"\t" +itemcount + "\n");
     }
 
     private void totaPrice(double itemPrice) {

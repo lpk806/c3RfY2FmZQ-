@@ -192,8 +192,8 @@ public class MenuActivity extends AppCompatActivity
             Intent menu = new Intent(MenuActivity.this,MenuActivity.class);
             startActivity(menu);
         } else if (id == R.id.nav_order) {
-//            Intent order = new Intent(MenuActivity.this,OrderActivity.class);
-//            startActivity(order);
+            Intent order = new Intent(MenuActivity.this,OrderActivity.class);
+            startActivity(order);
         }else  if (id == R.id.nav_logout){
             FirebaseAuth.getInstance().signOut();
             Intent main = new Intent(MenuActivity.this,MainActivity.class);

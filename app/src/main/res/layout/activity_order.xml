@@ -5,22 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#bdbdbd"
-    tools:context=".FoodsActivity">
+    tools:context=".OrderActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="30sp"
-        android:text="Category"
+        android:text="你的訂單"
         android:gravity="center"
-        android:id="@+id/categoryName"/>
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"/>
 
     <ListView
-        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/foodsList"/>
+        android:layout_margin="20dp"
+        android:id="@+id/orderList"/>
 
 </LinearLayout>

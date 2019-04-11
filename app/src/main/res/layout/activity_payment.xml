@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PaymentActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="付款"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/orderID"
+        android:text="訂單號:"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="盛惠$"
+        android:textSize="20sp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:id="@+id/payment_price"/>
+
+    <Button
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/fps"
+        android:text="轉數快(FPS)"
+        android:id="@+id/btn_fps"/>
+
+
+
+
+        <Button
+            android:layout_margin="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_credit_card_black_24dp"
+            android:text="信用卡"
+            android:id="@+id/btn_creditCard"/>
+
+
+
+</LinearLayout>
