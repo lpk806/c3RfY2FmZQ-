@@ -97,9 +97,11 @@ public class CartActivity extends AppCompatActivity {
                 count.setText("x" + model.getCount());itemPrice = Double.parseDouble(model.getPrice());
                 itemname = model.getName();
                 itemcount = model.getCount();
-                totalNamelist(itemname,itemcount);
+
                 itemPrice *= numCount;
                 totaPrice(itemPrice);
+                String uniPrice = Double.toString(itemPrice);
+                totalNamelist(itemname,itemcount,uniPrice);
 
                 //delete button
                 Button btn_delete = (Button)v.findViewById(R.id.btn_delete);
@@ -121,7 +123,7 @@ public class CartActivity extends AppCompatActivity {
         cartList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(CartActivity.this,"on9",Toast.LENGTH_SHORT).show();
+                Toast.makeText(CartActivity.this, "on9", Toast.LENGTH_LONG).show();
 
 //                TextView Tname = (TextView)view.findViewById(R.id.cart_name);
 //                TextView Tcount = (TextView)view.findViewById(R.id.cart_count);
@@ -161,8 +163,8 @@ public class CartActivity extends AppCompatActivity {
 
     }
 
-    private void totalNamelist(String itemname,String itemcount) {
-        totalName += (itemname +"\t" +itemcount + "\n");
+    private void totalNamelist(String itemname,String itemcount,String uniprice) {
+        totalName += (itemname +"\t" +itemcount+"\t$" +uniprice + "\n");
     }
 
     private void totaPrice(double itemPrice) {

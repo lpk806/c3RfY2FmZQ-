@@ -15,5 +15,25 @@ public class Order {
         this.totalPrice=totalPrice;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getTotalName() {
+        return totalName;
+    }
+
+    public String getTotalPrice() {
+        return totalPrice;
+    }
+
 
 }
