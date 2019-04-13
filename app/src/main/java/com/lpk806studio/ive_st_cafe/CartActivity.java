@@ -60,26 +60,31 @@ public class CartActivity extends AppCompatActivity {
         btn_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference ref = firebaseDatabase.getReference();
-                Random x = new Random();
-                String id = Integer.toString(x.nextInt(9999));
-                String status = "待付款";
-                String uid = user.getUid();
-                String orderPrice = Double.toString(total);
-                Order order = new Order(id,uid,status,totalName,orderPrice);
-                ref.child("Order").child(id).setValue(order);
+                if (keys.isEmpty()){
+                    //if user not select any food
+                    Toast.makeText(CartActivity.this,"購物車不能為空",Toast.LENGTH_LONG).show();
+                }else{
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = firebaseDatabase.getReference();
+                    Random x = new Random();
+                    String id = Integer.toString(x.nextInt(9999));
+                    String status = "待付款";
+                    String uid = user.getUid();
+                    String orderPrice = Double.toString(total);
+                    Order order = new Order(id,uid,status,totalName,orderPrice);
+                    ref.child("Order").child(id).setValue(order);
 
 
-                for(int i =0;i<keys.size();i++){
-                    String cartId = keys.get(i).toString();
-                    firebaseDatabase.getReference().child("Cart").child(cartId).removeValue();
+                    for(int i =0;i<keys.size();i++){
+                        String cartId = keys.get(i).toString();
+                        firebaseDatabase.getReference().child("Cart").child(cartId).removeValue();
+                    }
+
+                    Intent payment = new Intent(CartActivity.this,PaymentActivity.class);
+                    payment.putExtra("price",orderPrice);
+                    payment.putExtra("OrderId",id);
+                    startActivity(payment);
                 }
-
-                Intent payment = new Intent(CartActivity.this,PaymentActivity.class);
-                payment.putExtra("price",orderPrice);
-                payment.putExtra("OrderId",id);
-                startActivity(payment);
             }
         });
     }
@@ -122,9 +127,8 @@ public class CartActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         FirebaseDatabase.getInstance().getReference("Cart").child(adapter.getRef(position).getKey()).removeValue();
                         Snackbar.make(v, "刪除成功", Snackbar.LENGTH_LONG).show();
-                        finish();
-                        startActivity(getIntent());
-
+                        itemPrice = (-itemPrice *numCount);
+                        totaPrice(itemPrice);
                     }
                 });
                 //end of delete button
