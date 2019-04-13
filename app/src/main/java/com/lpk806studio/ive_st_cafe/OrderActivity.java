@@ -21,7 +21,7 @@ public class OrderActivity extends AppCompatActivity {
     FirebaseUser user;
     FirebaseListAdapter<Order> adapter;
     ListView orderList;
-    String Id;
+    String Id,checkStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,22 +57,18 @@ public class OrderActivity extends AppCompatActivity {
                 status.setText("狀態:"+model.getStatus());
                 name.setText(model.getTotalName());
                 total.setText("$"+model.getTotalPrice());
-                Id = model.getId();
+//                Id = model.getId();
+//                checkStatus = model.getStatus();
             }
         };
         orderList.setAdapter(adapter);
-        orderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(OrderActivity.this,"on99",Toast.LENGTH_LONG).show();
-                if (checkStatus.equals("狀態:待付款")){
-                    Intent payment = new Intent(OrderActivity.this,PaymentActivity.class);
-                    payment.putExtra("OrderId",id);
-                    startActivity(payment);
-
-                }
-            }
-        });
+//        orderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(OrderActivity.this,checkStatus,Toast.LENGTH_LONG).show();
+//
+//            }
+//        });
 
 
     }

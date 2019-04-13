@@ -29,6 +29,8 @@ import com.google.firebase.database.Query;
 import com.lpk806studio.ive_st_cafe.Model.Cart;
 import com.lpk806studio.ive_st_cafe.Model.Order;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class CartActivity extends AppCompatActivity {
@@ -37,7 +39,9 @@ public class CartActivity extends AppCompatActivity {
     double total,itemPrice;
     TextView totalPrice;
     Button btn_order;
-    String totalName="",itemname,itemcount;
+    String totalName="",itemname,itemcount,key;
+    ArrayList keys;
+    int j;
 
 
     @Override
@@ -48,6 +52,9 @@ public class CartActivity extends AppCompatActivity {
         btn_order = findViewById(R.id.btn_order);
         //get user id to map the cart item
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        keys  = new ArrayList();
+        j =0;
         loadCartList(user.getUid());
 
         btn_order.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +70,11 @@ public class CartActivity extends AppCompatActivity {
                 Order order = new Order(id,uid,status,totalName,orderPrice);
                 ref.child("Order").child(id).setValue(order);
 
-                firebaseDatabase.getReference("Cart").child(uid).removeValue();
+
+                for(int i =0;i<keys.size();i++){
+                    String cartId = keys.get(i).toString();
+                    firebaseDatabase.getReference().child("Cart").child(cartId).removeValue();
+                }
 
                 Intent payment = new Intent(CartActivity.this,PaymentActivity.class);
                 payment.putExtra("price",orderPrice);
@@ -71,7 +82,6 @@ public class CartActivity extends AppCompatActivity {
                 startActivity(payment);
             }
         });
-
     }
 
     private void loadCartList(String uid) {
@@ -88,15 +98,17 @@ public class CartActivity extends AppCompatActivity {
         adapter = new FirebaseListAdapter<Cart>(options) {
             @Override
             protected void populateView(View v, final Cart model, final int position) {
-                TextView name = (TextView)v.findViewById(R.id.cart_name);
-                final TextView price = (TextView)v.findViewById(R.id.cart_price);
-                TextView count = (TextView)v.findViewById(R.id.cart_count);
+                TextView name = v.findViewById(R.id.cart_name);
+                final TextView price = v.findViewById(R.id.cart_price);
+                TextView count = v.findViewById(R.id.cart_count);
                 final Double numCount = Double.parseDouble(model.getCount());
                 name.setText(model.getName());
                 price.setText("$" + model.getPrice());
                 count.setText("x" + model.getCount());itemPrice = Double.parseDouble(model.getPrice());
                 itemname = model.getName();
                 itemcount = model.getCount();
+                key = adapter.getRef(position).getKey();
+                add_keyList(key);
 
                 itemPrice *= numCount;
                 totaPrice(itemPrice);
@@ -162,6 +174,11 @@ public class CartActivity extends AppCompatActivity {
         });
 
     }
+
+    private void add_keyList(String key) {
+        keys.add(key);
+    }
+
 
     private void totalNamelist(String itemname,String itemcount,String uniprice) {
         totalName += (itemname +"\t" +itemcount+"\t$" +uniprice + "\n");
