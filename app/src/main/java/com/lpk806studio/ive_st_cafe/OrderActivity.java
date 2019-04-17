@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class OrderActivity extends AppCompatActivity {
     FirebaseListAdapter<Order> adapter;
     ListView orderList;
     String Id,checkStatus;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,10 @@ public class OrderActivity extends AppCompatActivity {
         orderList = findViewById(R.id.orderList);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        loadOrderList(user.getUid());
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE); //progressbar display
 
+        loadOrderList(user.getUid());
     }
 
     private void loadOrderList(String uid) {
@@ -57,6 +61,7 @@ public class OrderActivity extends AppCompatActivity {
                 status.setText("狀態:"+model.getStatus());
                 name.setText(model.getTotalName());
                 total.setText("$"+model.getTotalPrice());
+                progressBar.setVisibility(View.INVISIBLE);//progressbar display=null
 //                Id = model.getId();
 //                checkStatus = model.getStatus();
             }
@@ -69,8 +74,6 @@ public class OrderActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
-
     }
     @Override
     protected void onStart() {
@@ -84,5 +87,9 @@ public class OrderActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent back_to_menu = new Intent(OrderActivity.this, MenuActivity.class);
+        startActivity(back_to_menu);
+    }
 }

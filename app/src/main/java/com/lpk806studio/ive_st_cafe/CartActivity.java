@@ -127,8 +127,8 @@ public class CartActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         FirebaseDatabase.getInstance().getReference("Cart").child(adapter.getRef(position).getKey()).removeValue();
                         Snackbar.make(v, "刪除成功", Snackbar.LENGTH_LONG).show();
-                        itemPrice = (-itemPrice *numCount);
-                        totaPrice(itemPrice);
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
                 //end of delete button

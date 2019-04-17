@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -19,12 +20,16 @@ public class FoodsActivity extends AppCompatActivity {
     TextView categoryname;
     String category ="";
     FirebaseListAdapter<Food> adapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foods);
         categoryname = findViewById(R.id.categoryName);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE); //progressbar display
 
         if (getIntent() !=null) {
             category = getIntent().getStringExtra("CategoryId");
@@ -55,6 +60,7 @@ public class FoodsActivity extends AppCompatActivity {
                 TextView foodpriceText=(TextView)v.findViewById(R.id.list_foodPrice);
                 foodnameText.setText(model.getName());
                 foodpriceText.setText("$"+model.getPrice());
+                progressBar.setVisibility(View.INVISIBLE);//progressbar display=null
             }
         };
         ListView foodsList = findViewById(R.id.foodsList);

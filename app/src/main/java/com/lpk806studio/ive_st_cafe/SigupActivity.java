@@ -1,6 +1,8 @@
 package com.lpk806studio.ive_st_cafe;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.lpk806studio.ive_st_cafe.Model.Check_network;
 import com.lpk806studio.ive_st_cafe.Model.User;
 
 public class SigupActivity extends AppCompatActivity {
@@ -26,6 +29,9 @@ public class SigupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private DatabaseReference mDatabase;
+    private String name, user, pw, re_pw;
+    private boolean network_state;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,32 +50,48 @@ public class SigupActivity extends AppCompatActivity {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = username.getText().toString();
-                String user = email.getText().toString();
-                String password1 = password.getText().toString();
-                String password2 = check_password.getText().toString();
-                if (user.isEmpty() || name.isEmpty()){
-                    Snackbar.make(v, "請輸入Email and name", Snackbar.LENGTH_LONG).show();
-                }else if(password1.isEmpty() && password2.isEmpty()){
-                    Snackbar.make(v, "請輸入Password", Snackbar.LENGTH_LONG).show();
-                }else if(password1.equals(password2)){
-                   sigup(user,password2,name);
-                    progressBar.setVisibility(View.VISIBLE);
-                }else{
-                    Snackbar.make(v, "兩次密碼不相同", Snackbar.LENGTH_LONG).show();
-                }
+                name = username.getText().toString();
+                user = email.getText().toString();
+                pw = password.getText().toString();
+                re_pw = check_password.getText().toString();
+
+                //get newtowk state
+                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                Check_network cn = new Check_network (connectivityManager);
+                network_state = cn.get_network_state();
+
+                error_Checking();
             }
         });
     }
 
-    private void sigup(final String user, String password2, final String name) {
-        mAuth.createUserWithEmailAndPassword(user, password2)
+    private void error_Checking() {
+        if (!network_state) {
+            Toast.makeText(SigupActivity.this, "Please connect to the newtork", Toast.LENGTH_SHORT).show();
+        } else if (name.isEmpty()) {
+            Toast.makeText(SigupActivity.this, "Please input your username", Toast.LENGTH_SHORT).show();
+        } else if (user.isEmpty()) {
+            Toast.makeText(SigupActivity.this, "Please input your email address", Toast.LENGTH_SHORT).show();
+        } else if (pw.isEmpty()) {
+            Toast.makeText(SigupActivity.this, "Please input your password", Toast.LENGTH_SHORT).show();
+        } else if (re_pw.isEmpty()) {
+            Toast.makeText(SigupActivity.this, "Please input Re-enter password", Toast.LENGTH_SHORT).show();
+        } else if (!pw.equals(re_pw)) {
+            Toast.makeText(SigupActivity.this, "The Password and Re-enter password is not equal", Toast.LENGTH_SHORT).show();
+        } else {
+            progressBar.setVisibility(View.VISIBLE); //progressbar display
+            sigup(); //if no error, go sign up
+        }
+    }
+
+    private void sigup() {
+        mAuth.createUserWithEmailAndPassword(user, pw)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = task.getResult().getUser();
-                            writeNewUser(user.getUid(), name, user.getEmail());
+                            writeNewUser(user.getUid(), user.getEmail());
                             Intent menu = new Intent(SigupActivity.this,MenuActivity.class);
                             startActivity(menu);
                             progressBar.setVisibility(View.INVISIBLE);
@@ -82,8 +104,8 @@ public class SigupActivity extends AppCompatActivity {
                 });
     }
 
-    private void writeNewUser(String uid, String username, String email) {
-        User user = new User(username, email);
+    private void writeNewUser(String uid, String email) {
+        User user = new User(name, email);
         mDatabase.child("users").child(uid).setValue(user);
     }
 }

@@ -3,8 +3,10 @@ package com.lpk806studio.ive_st_cafe;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.lpk806studio.ive_st_cafe.Model.Category;
+import com.lpk806studio.ive_st_cafe.Model.Check_network;
 import com.lpk806studio.ive_st_cafe.Model.User;
 
 public class MenuActivity extends AppCompatActivity
@@ -44,6 +48,7 @@ public class MenuActivity extends AppCompatActivity
     private DatabaseReference mUserDatabase;
     private FirebaseUser user;
     FirebaseListAdapter<Category> adapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +56,13 @@ public class MenuActivity extends AppCompatActivity
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE); //progressbar display
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         mUserDatabase = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
 
+        network_Checking();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +81,6 @@ public class MenuActivity extends AppCompatActivity
 
         //create category list
         showCategoryList();
-
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -104,6 +111,15 @@ public class MenuActivity extends AppCompatActivity
 
     }
 
+    private void network_Checking() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        Check_network cn = new Check_network (connectivityManager);
+        boolean network_state = cn.get_network_state();
+        if (!network_state) {
+            Toast.makeText(MenuActivity.this, "Please connect to the newtork", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     public void showCategoryList() {
         Query query = FirebaseDatabase.getInstance()
@@ -120,6 +136,7 @@ public class MenuActivity extends AppCompatActivity
             protected void populateView(View v,Category model, int position) {
                 TextView nameText=(TextView)v.findViewById(android.R.id.text1);
                 nameText.setText(model.getName());
+                progressBar.setVisibility(View.INVISIBLE);//progressbar display=null
             }
         };
         ListView categoryList = findViewById(R.id.categoryList);
@@ -156,31 +173,11 @@ public class MenuActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            this.finishAffinity();
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
