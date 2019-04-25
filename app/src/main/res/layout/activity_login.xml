@@ -67,7 +67,7 @@ tools:context=".LoginActivity">
                 android:layout_margin="30px"
                 android:background="#1de9b6"
                 android:padding="28px"
-                android:text="Login" />
+                android:text="@string/login" />
 
             <TextView
                 android:id="@+id/btn_forget_password"
