@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">沙田IVE-Grove</string>
+    <string name="login">登入</string>
+    <string name="email">電郵</string>
+    <string name="password">密碼</string>
+    <string name="re_enter_password">重複輸入密碼</string>
+    <string name="username_max_10_word">用戶名稱（最多十個字）</string>
+    <string name="menu">餐單</string>
+    <string name="order">柯打</string>
+    <string name="office">辦事處</string>
+    <string name="phone">電話</string>
+    <string name="sign_up">注冊</string>
+    <string name="sign_out">登出</string>
+</resources>

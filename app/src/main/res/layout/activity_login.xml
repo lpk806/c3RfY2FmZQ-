@@ -35,7 +35,7 @@ tools:context=".LoginActivity">
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100px"
                 android:layout_marginBottom="100px"
-                android:text="Login"
+                android:text="@string/login"
                 android:textAlignment="center"
                 android:textSize="40sp" />
 

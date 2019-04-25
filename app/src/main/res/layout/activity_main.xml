@@ -45,7 +45,7 @@
             android:layout_margin="20px"
             android:layout_weight="1"
             android:background="#00b0ff"
-            android:text="Sign Up" />
+            android:text="@string/sign_up" />
 
         <Button
             android:id="@+id/btn_loginPage"
@@ -54,7 +54,7 @@
             android:layout_margin="20px"
             android:layout_weight="1"
             android:background="#1de9b6"
-            android:text="LOGIN" />
+            android:text="@string/login" />
 
 
     </LinearLayout>
