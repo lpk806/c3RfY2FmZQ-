@@ -19,6 +19,18 @@
     <item android:title="Other">
         <menu>
             <item
+                android:id="@+id/nav_geo"
+                android:icon="@drawable/ic_location_on_black_24dp"
+                android:title="辦事處" />
+            <item
+                android:id="@+id/nav_phone"
+                android:icon="@drawable/ic_call_black_24dp"
+                android:title="電話" />
+            <item
+                android:id="@+id/nav_git"
+                android:icon="@drawable/ic_device_hub_black_24dp"
+                android:title="GITHUB" />
+            <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_person_black_24dp"
                 android:title="登出" />

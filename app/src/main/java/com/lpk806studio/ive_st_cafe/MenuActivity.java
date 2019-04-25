@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -191,6 +192,16 @@ public class MenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_order) {
             Intent order = new Intent(MenuActivity.this,OrderActivity.class);
             startActivity(order);
+        }else if(id == R.id.nav_geo){
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:22.365304,114.116329"));
+            startActivity(mapIntent);
+        }else if(id == R.id.nav_phone){
+            Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+            phoneIntent.setData(Uri.parse("tel:26141088"));
+            startActivity(phoneIntent);
+        }else if(id == R.id.nav_git){
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/lpk806/c3RfY2FmZQ-"));
+            startActivity(browserIntent);
         }else  if (id == R.id.nav_logout){
             FirebaseAuth.getInstance().signOut();
             Intent main = new Intent(MenuActivity.this,MainActivity.class);
