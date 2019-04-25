@@ -12,4 +12,8 @@
     <string name="phone">電話</string>
     <string name="sign_up">注冊</string>
     <string name="sign_out">登出</string>
+    <string name="forget_password">忘記密碼 ?</string>
+    <string name="reset_password">重設密碼</string>
+    <string name="your_email_address">你的電郵地址</string>
+    <string name="send_email_and_reset_password">發送電郵和重設密碼</string>
 </resources>

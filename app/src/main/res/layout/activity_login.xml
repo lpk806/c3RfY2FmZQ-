@@ -45,7 +45,7 @@ tools:context=".LoginActivity">
                 android:layout_height="wrap_content"
                 android:layout_margin="30px"
                 android:background="@drawable/edittextbackground"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:padding="28px" />
 
@@ -55,7 +55,7 @@ tools:context=".LoginActivity">
                 android:layout_height="wrap_content"
                 android:layout_margin="30px"
                 android:background="@drawable/edittextbackground"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:padding="28px" />
 
@@ -78,7 +78,7 @@ tools:context=".LoginActivity">
                 android:clickable="true"
                 android:gravity="right"
                 android:onClick="onClick"
-                android:text="Forget Password ?" />
+                android:text="@string/forget_password" />
 
         </LinearLayout>
     </ScrollView>

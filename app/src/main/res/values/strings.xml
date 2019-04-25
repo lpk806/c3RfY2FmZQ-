@@ -19,5 +19,9 @@
     <string name="office">office</string>
     <string name="phone">phone</string>
     <string name="sign_out">Sign_out</string>
+    <string name="forget_password">Forget Password ?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="send_email_and_reset_password">Send email and reset password</string>
+    <string name="your_email_address">Your Email Address</string>
 
 </resources>
